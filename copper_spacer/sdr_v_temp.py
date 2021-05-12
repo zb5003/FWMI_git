@@ -3,8 +3,8 @@
 """
 import numpy as np
 import matplotlib.pyplot as plt
-from fwmi import Copper
-from lithosil_q import LITHOSIL_Q
+from fwmi import Metal
+from glass_library import LITHOSIL_Q
 
 
 switch_lam = 2
@@ -18,7 +18,8 @@ t = 20
 p = 1
 f = 0.1
 
-h1 = Copper(fopd, theta_t, gamma_m, gamma_a, lam, t, t_ref, p, d_opd_d_t=None, glass=LITHOSIL_Q)
+h1 = Metal(fopd, theta_t, gamma_m, gamma_a, lam, t, t_ref, p, d_opd_d_t=lam / 5, glass=LITHOSIL_Q, metal_a=None)
+print(h1.metal_a)
 
 n_T = 1000
 theta_d = 0.002

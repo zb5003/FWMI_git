@@ -3,7 +3,7 @@
 """
 import numpy as np
 import matplotlib.pyplot as plt
-from fwmi import Pure
+from fwmi import Hybrid
 from glass_library import *
 
 
@@ -18,12 +18,12 @@ t = 20
 p = 1
 f = 0.1
 
-h1 = Pure(fopd, theta_t, gamma_m, gamma_a, lam, t, t_ref, p, glass=LITHOSIL_Q)
+h1 = Hybrid(fopd, theta_t, gamma_m, gamma_a, lam, t, t_ref, p, d_opd_d_t=lam / 5, pure_arm=BK7, hybrid_arm=LITHOSIL_Q)
 
 n_T = 1000
 theta_d = 0.002
 d_T = np.linspace(-10, 10, n_T)
-print(h1.d_glass, h1.d_air)
+print(h1.d1, h1.d2, h1.d3)
 
 t_m = np.zeros(n_T)
 t_a = np.zeros(n_T)
@@ -32,10 +32,12 @@ fsrs = np.zeros(n_T)
 opds = np.zeros(n_T)
 theta_t_0 = theta_t
 for i in range(n_T):
-    n1 = h1.generate_n_glass(h1.t + d_T[i])
-    d1 = h1.d_glass_thermal_expansion(h1.t + d_T[i])
-    n2 = h1.generate_n_air(h1.t + d_T[i])
-    opd = h1.opd_exact_pure(theta_t, n1, d1, n2, h1.d_air)
+    n1 = h1.generate_n1(h1.t + d_T[i])
+    d1 = h1.d1_thermal_expansion(h1.t + d_T[i])
+    n2 = h1.generate_n2(h1.t + d_T[i])
+    d2 = h1.d2_thermal_expansion(h1.t + d_T[i])
+    n3 = h1.generate_n3(h1.t + d_T[i])
+    opd = h1.opd_exact(theta_t, n1, d1, n2, d2, n3, h1.d3)
     opds[i] = opd
     fsrs[i] = h1.fsr(opd)
     t_m[i] = h1.overall_transmittance(theta_d, f, h1.gamma_m, h1.fsr(opd))

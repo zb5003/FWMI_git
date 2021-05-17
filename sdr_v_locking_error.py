@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from fwmi import H1
+from fwmi import Hybrid
 
 
 switch_lam = 2
@@ -14,7 +14,7 @@ t = 20
 p = 1
 f = 0.1
 
-h1 = H1(fopd, theta_t, gamma_m, gamma_a, lam, t, t_ref, p)
+h1 = Hybrid(fopd, theta_t, gamma_m, gamma_a, lam, t, t_ref, p)
 n_nu = 100
 theta_d = 0.5 * np.pi / 180
 d_nu = np.linspace(0.01e9, 0.1e9, n_nu)

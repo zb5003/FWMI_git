@@ -4,11 +4,11 @@
 import numpy as np
 import scipy.constants as const
 import matplotlib.pyplot as plt
-from fwmi import Copper
-from lithosil_q import LITHOSIL_Q
+from fwmi import Metal
+from glass_library import LITHOSIL_Q, N_SF66
 
 mol_fwhm_1064 = 1.4e9
-aer_fwhm_1064 = 50e6
+aer_fwhm_1064 = 100e6
 switch_lam = 1
 lam = 1064e-9 * switch_lam
 theta_t = 1.5 * np.pi / 180
@@ -32,7 +32,7 @@ sdr = np.zeros(n_fopds)
 fsrs = np.zeros(n_fopds)
 theta_t_0 = theta_t
 for i in range(n_fopds):
-    h1 = Copper(fopds[i], theta_t, gamma_m, gamma_a, lam, t, t_ref, p, d_opd_d_t=lam / 5, glass=LITHOSIL_Q)
+    h1 = Metal(fopds[i], theta_t, gamma_m, gamma_a, lam, t, t_ref, p, d_opd_d_t=lam / 5, glass=LITHOSIL_Q)
     fsrs[i] = h1.fsr(fopds[i])
     t_m[i] = h1.overall_transmittance(theta_d, f, h1.gamma_m, h1.fsr(fopds[i]))
     t_a[i] = h1.overall_transmittance(theta_d, f, h1.gamma_a, h1.fsr(fopds[i]))
@@ -61,9 +61,11 @@ for i in range(n_fopds):
 # plt.show()
 fig, ax = plt.subplots(2)
 ax[0].plot(fsrs / 1e9, t_m)
+ax[0].grid(True)
 ax[0].set_ylabel(r'T$_m$')
 ax[0].set_title(r'$\gamma_m$ = {0} GHz, $\gamma_a$ = {1} MHz'.format(2 * gamma_m / 1e9, 2 * gamma_a / 1e6))
 ax[1].plot(fsrs / 1e9, sdr)
+ax[1].grid(True)
 ax[1].set_xlabel('FSR (GHz)')
 ax[1].set_ylabel(r'T$_m$ / T$_a$')
 plt.show()

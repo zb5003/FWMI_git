@@ -1,24 +1,25 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from fwmi import Copper
-from lithosil_q import LITHOSIL_Q
+from fwmi import Metal
+from glass_library import LITHOSIL_Q, N_SF66
 
 
 switch_lam = 2
 lam = 532e-9 * switch_lam
 theta_t = 1.5 * np.pi / 180
 gamma_m = 1.40e9 / switch_lam  # molecular signal spectral width
-gamma_a = 50e6 / switch_lam  # aerosol signal spectral width
-fopd = 0.15 * switch_lam
+gamma_a = 100e6 / switch_lam  # aerosol signal spectral width
+fopd = 3e8 / 2e9 # * switch_lam
 t_ref = 20
 t = 20
 p = 1
 f = 0.1
 
-h1 = Copper(fopd, theta_t, gamma_m, gamma_a, lam, t, t_ref, p, d_opd_d_t=lam / 5, glass=LITHOSIL_Q)
+h1 = Metal(fopd, theta_t, gamma_m, gamma_a, lam, t, t_ref, p, d_opd_d_t=lam / 5, glass=N_SF66, metal_a=None)
+print(h1.d_air, h1.d_glass, h1.fsr(fopd) / 1e9)
 n_nu = 100
 theta_d = 0.002
-d_nu = np.linspace(0.01e9, 0.1e9, n_nu)
+d_nu = np.linspace(0.0e9, 0.1e9, n_nu)
 
 t_m = np.zeros(n_nu)
 t_a = np.zeros(n_nu)

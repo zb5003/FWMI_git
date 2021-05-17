@@ -4,7 +4,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from fwmi import Metal
-from glass_library import LITHOSIL_Q
+from glass_library import LITHOSIL_Q, N_SF66
 
 
 switch_lam = 2
@@ -18,11 +18,11 @@ t = 20
 p = 1
 f = 0.1
 
-h1 = Metal(fopd, theta_t, gamma_m, gamma_a, lam, t, t_ref, p, d_opd_d_t=lam / 5, glass=LITHOSIL_Q, metal_a=None)
-print(h1.metal_a)
+h1 = Metal(fopd, theta_t, gamma_m, gamma_a, lam, t, t_ref, p, d_opd_d_t=lam / 5, glass=N_SF66, metal_a=17e-6)
+print(h1.metal_a, h1.n_glass)
 
 n_T = 1000
-theta_d = 0.002
+theta_d = 0.02
 d_T = np.linspace(-2, 2, n_T)
 print(h1.d_air, h1.d_glass)
 
